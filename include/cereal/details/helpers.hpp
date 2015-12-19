@@ -51,6 +51,21 @@ namespace cereal
     explicit Exception( const char * what_ ) : std::runtime_error(what_) {}
   };
 
+  #ifdef CEREAL_NO_EXCEPTIONS
+  [[noreturn]] void throw_exception(std::exception const & e); // user defined
+  #else
+  inline void throw_exception_assert_compatibility( std::exception const & ) { }
+
+  template<class E> [[noreturn]] inline void throw_exception(E const & e)
+  {
+    //All cereal exceptions are required to derive from std::exception,
+    //to ensure compatibility with CEREAL_NO_EXCEPTIONS.
+    throw_exception_assert_compatibility(e);
+
+    throw e;
+  }
+  #endif
+
   // ######################################################################
   //! The size type used by cereal
   /*! To ensure compatability between 32, 64, etc bit machines, we need to use
