@@ -79,4 +79,8 @@
 #define CEREAL_SAVE_MINIMAL_FUNCTION_NAME save_minimal
 #endif // CEREAL_SAVE_MINIMAL_FUNCTION_NAME
 
+#if !__has_feature(cxx_exceptions) &&!defined(CEREAL_NO_EXCEPTIONS)
+#  define CEREAL_NO_EXCEPTIONS
+#endif
+
 #endif // CEREAL_MACROS_HPP_
