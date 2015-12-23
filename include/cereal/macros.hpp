@@ -79,8 +79,14 @@
 #define CEREAL_SAVE_MINIMAL_FUNCTION_NAME save_minimal
 #endif // CEREAL_SAVE_MINIMAL_FUNCTION_NAME
 
-#if !__has_feature(cxx_exceptions) &&!defined(CEREAL_NO_EXCEPTIONS)
-#  define CEREAL_NO_EXCEPTIONS
+#if defined(__clang__) // By Juneyoung Lee; __has_feature is available only in clang compiler
+#  if !__has_feature(cxx_exceptions) &&!defined(CEREAL_NO_EXCEPTIONS)
+#    define CEREAL_NO_EXCEPTIONS
+#  endif
+#elif defined(__GNUC__) || defined(__GNUG__) // By Juneyoung Lee
+#  if !defined(__EXCEPTIONS) && !defined(CEREAL_NO_EXCEPTIONS)
+#    define CEREAL_NO_EXCEPTIONS
+#  endif
 #endif
 
 #endif // CEREAL_MACROS_HPP_
