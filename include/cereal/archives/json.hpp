@@ -43,7 +43,7 @@ namespace cereal
 // Override rapidjson assertions to throw exceptions by default
 #ifndef RAPIDJSON_ASSERT
 #define RAPIDJSON_ASSERT(x) if(!(x)){ \
-  throw ::cereal::RapidJSONException("rapidjson internal assertion failure: " #x); }
+  throw_exception(::cereal::RapidJSONException("rapidjson internal assertion failure: " #x)); }
 #endif // RAPIDJSON_ASSERT
 
 #include <cereal/external/rapidjson/prettywriter.h>
@@ -428,7 +428,7 @@ namespace cereal
         auto decoded = base64::decode( encoded );
 
         if( size != decoded.size() )
-          throw Exception("Decoded binary data size does not match specified size");
+          throw_exception(Exception("Decoded binary data size does not match specified size"));
 
         std::memcpy( data, decoded.data(), decoded.size() );
         itsNextName = nullptr;
@@ -471,7 +471,7 @@ namespace cereal
             {
               case Value : return itsValueItBegin[itsIndex];
               case Member: return itsMemberItBegin[itsIndex].value;
-              default: throw cereal::Exception("Invalid Iterator Type!");
+              default: throw_exception(cereal::Exception("Invalid Iterator Type!"));
             }
           }
 
@@ -501,7 +501,7 @@ namespace cereal
               }
             }
 
-            throw Exception("JSON Parsing failed - provided NVP not found");
+            throw_exception(Exception("JSON Parsing failed - provided NVP not found"));
           }
 
         private:

@@ -395,13 +395,13 @@ namespace cereal
           //std::cerr << "-----Error-----" << std::endl;
           //std::cerr << e.what() << std::endl;
           //std::cerr << e.where<char>() << std::endl;
-          throw Exception("XML Parsing failed - likely due to invalid characters or invalid naming");
+          throw_exception(Exception("XML Parsing failed - likely due to invalid characters or invalid naming"));
         }
 
         // Parse the root
         auto root = itsXML.first_node( xml_detail::CEREAL_XML_STRING );
         if( root == nullptr )
-          throw Exception("Could not detect cereal root node - likely due to empty or invalid input");
+          throw_exception(Exception("Could not detect cereal root node - likely due to empty or invalid input"));
         else
           itsNodes.emplace( root );
       }
@@ -423,7 +423,7 @@ namespace cereal
         auto decoded = base64::decode( encoded );
 
         if( size != decoded.size() )
-          throw Exception("Decoded binary data size does not match specified size");
+          throw_exception(Exception("Decoded binary data size does not match specified size"));
 
         std::memcpy( data, decoded.data(), decoded.size() );
 
@@ -459,7 +459,7 @@ namespace cereal
           next = itsNodes.top().search( expectedName );
 
           if( next == nullptr )
-            throw Exception("XML Parsing failed - provided NVP not found");
+            throw_exception(Exception("XML Parsing failed - provided NVP not found"));
         }
 
         itsNodes.emplace( next );
